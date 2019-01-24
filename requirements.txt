@@ -1,1 +1,2 @@
-pygame==
+pygame==1.9.2a0
+cozmo==1.4.8

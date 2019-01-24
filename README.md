@@ -18,3 +18,4 @@ To run this project:
 * [Xbox Controller Module](https://github.com/martinohanlon/XboxController)
 * [Pygame](https://www.pygame.org/wiki/GettingStarted)
 * [Xboxdrv - for Linux based systems](https://github.com/xboxdrv/xboxdrv)
+* [Cozmo SDK](http://cozmosdk.anki.com/docs/)
