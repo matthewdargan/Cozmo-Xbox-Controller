@@ -12,6 +12,8 @@ To run this project:
 3. Install the required dependencies with `pip install -r requirements.txt`.
 4. Execute `python CozmoInterface.py` from the terminal to establish a connect to the robot from your mobile device and begin using the controller.
 
+**Note: You must install [Xboxdrv](https://github.com/xboxdrv/xboxdrv) in order to use an Xbox 360 controller on a Linux device; however, Windows devices do not require any 3rd party driver.**
+
 ## Dependencies
 * [Xbox Controller Module](https://github.com/martinohanlon/XboxController)
 * [Pygame](https://www.pygame.org/wiki/GettingStarted)
