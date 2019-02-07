@@ -15,7 +15,6 @@ To run this project:
 **Note: You must install [Xboxdrv](https://github.com/xboxdrv/xboxdrv) in order to use an Xbox 360 controller on a Linux device; however, Windows devices do not require any 3rd party driver.**
 
 ## Dependencies
-* [Xbox Controller Module](https://github.com/martinohanlon/XboxController)
-* [Pygame](https://www.pygame.org/wiki/GettingStarted)
+* [Xbox Controller Module](https://github.com/FRC4564/Xbox)
 * [Xboxdrv - for Linux based systems](https://github.com/xboxdrv/xboxdrv)
 * [Cozmo SDK](http://cozmosdk.anki.com/docs/)
