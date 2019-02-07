@@ -348,13 +348,13 @@ if __name__ == '__main__':
 
     #generic call back
     def controlCallBack(xboxControlId, value):
-        print "Control Id = {}, Value = {}".format(xboxControlId, value)
+        print ("Control Id = {}, Value = {}".format(xboxControlId, value))
 
     #specific callbacks for the left thumb (X & Y)
     def leftThumbX(xValue):
-        print "LX {}".format(xValue)
+        print ("LX {}".format(xValue))
     def leftThumbY(yValue):
-        print "LY {}".format(yValue)
+        print ("LY {}".format(yValue))
 
     #setup xbox controller, set out the deadzone and scale, also invert the Y Axis (for some reason in Pygame negative is up - wierd! 
     xboxCont = XboxController(controlCallBack, deadzone = 30, scale = 100, invertYAxis = True)
@@ -366,17 +366,17 @@ if __name__ == '__main__':
     try:
         #start the controller
         xboxCont.start()
-        print "xbox controller running"
+        print("xbox controller running")
         while True:
             time.sleep(1)
 
     #Ctrl C
     except KeyboardInterrupt:
-        print "User cancelled"
+        print ("User cancelled")
     
     #error        
     except:
-        print "Unexpected error:", sys.exc_info()[0]
+        print ("Unexpected error:", sys.exc_info()[0])
         raise
         
     finally:
