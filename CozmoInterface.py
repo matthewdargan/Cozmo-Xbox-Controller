@@ -1,28 +1,30 @@
-#Initialize Cozmo File
-#Matthew Dargan, Daniel Stutz
+""" Xbox 360 controller interface for cozmo
+Authors: Matthew Dargan, Daniel Stutz
+"""
 
 import cozmo
 import xbox
-import cozmo.robot
 
 def cozmo_program(robot: cozmo.robot.Robot):
     """
     TODO: Comment function
     """
+
     joy = xbox.Joystick()
     is_cozmo_in_use = True
 
     # continous loop that checks for xbox controller input until we are done with the program
     # xbox home button will be used to terminate
     while (is_cozmo_in_use):
-        # get y-axis input from left stick before if statements
-        y = joy.leftY()
-        x = joy.rightX()
-        left_Trigger = joy.leftTrigger()
-        right_Trigger = joy.rightTrigger()
+        y = joy.leftY() # get y-axis input from left stick before if statements
+        x = joy.rightX() # get x-axis input from left stick before if statements
+        left_Trigger = joy.leftTrigger() # get scalar for the left trigger
+        right_Trigger = joy.rightTrigger() # get scalar for the right trigger
+
         if joy.Guide():
             # close the xbox python interface program
             joy.close()
+            robot.say_text("I am done with this program.")
 
             # so we don't go through the while loop again
             is_cozmo_in_use = False
