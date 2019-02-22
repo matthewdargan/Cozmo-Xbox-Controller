@@ -3,7 +3,9 @@ Authors: Matthew Dargan, Daniel Stutz
 """
 
 import cozmo
+from cozmo.util import degrees
 import xbox
+
 
 def cozmo_program(robot: cozmo.robot.Robot):
     """
@@ -11,44 +13,101 @@ def cozmo_program(robot: cozmo.robot.Robot):
     """
 
     joy = xbox.Joystick()
-    is_cozmo_in_use = True
 
     # continous loop that checks for xbox controller input until we are done with the program
     # xbox home button will be used to terminate
-    while (is_cozmo_in_use):
-        y = joy.leftY() # get y-axis input from left stick before if statements
-        x = joy.rightX() # get x-axis input from left stick before if statements
-        left_Trigger = joy.leftTrigger() # get scalar for the left trigger
-        right_Trigger = joy.rightTrigger() # get scalar for the right trigger
+    while joy.connected():
+        # refresh the xbox inputs from the driver
+        joy.refresh()
+
+        y = joy.leftY()  # get y-axis input from left stick before if statements
+        x = joy.rightX()  # get x-axis input from left stick before if statements
+        left_trigger = joy.leftTrigger()  # get scalar for the left trigger
+        right_trigger = joy.rightTrigger()  # get scalar for the right trigger
 
         if joy.Guide():
             # close the xbox python interface program
             joy.close()
             robot.say_text("I am done with this program.")
+            exit()
 
-            # so we don't go through the while loop again
-            is_cozmo_in_use = False
-        elif y is not None:
-            # call cozmo movement function
-            cozmo_movement(robot, scalar=y)
+        elif y:
+            # Double the speed if the stick is pressed in
+            if joy.leftThumbstick():
+                cozmo_movement(robot, scalar=y, speed=300)
+            else:
+                cozmo_movement(robot, scalar=y)
 
-        elif x is not None:
+        elif x:
+            # Double the rotational speed if the stick is pressed in
             # TODO: we have to figure out how to speed the treads to turn
-            cozmo_movement(robot, scalar=x)
-        elif left_Trigger:
-            
-            # Move lift takes the parameter speed which is a float in radians per second
-            move_lift(10.0)
-        elif right_Trigger:
-            pass
+            if joy.rightThumbstick():
+                cozmo_rotate(robot, scalar=x, speed=400)
+            else:
+                cozmo_rotate(robot, scalar=x)
 
-def cozmo_movement(robot: cozmo.robot.Robot, scalar):
+        elif left_trigger:
+            robot.set_lift_height(left_trigger).wait_for_completed()
+
+        elif right_trigger:
+            robot.set_lift_height(right_trigger).wait_for_completed()
+
+        elif joy.A():
+            robot.play_anim(name="anim_petdetection_dog_03").wait_for_completed()
+
+        elif joy.B():
+            robot.play_anim(name="anim_petdetection_dog_03").wait_for_completed()
+
+        elif joy.X():
+            robot.play_anim(name="anim_petdetection_dog_03").wait_for_completed()
+
+        elif joy.Y():
+            robot.play_anim(name="anim_petdetection_dog_03").wait_for_completed()
+
+        elif joy.dpadUp():
+
+        elif joy.dpadDown():
+
+        elif joy.dpadLeft():
+
+        elif joy.dpadRight():
+
+        elif joy.leftBumper():
+
+        elif joy.rightBumper():
+
+        elif joy.Back():
+
+        elif joy.Start():
+
+
+def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
-    TODO: Comment function
+    TODO
+
+    :param robot:
+    :param scalar:
+    :param speed:
+    :return:
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(150)).wait_for_completed()
+    robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed)).wait_for_completed()
+
+
+def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=200):
+    """
+    TODO
+
+    :param robot:
+    :param scalar:
+    :param speed:
+    :return:
+    """
+
+    # TODO: Change speed parameter to do some cool scalar math
+    robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed)).wait_for_completed()
+
 
 if __name__ == '__main__':
-	cozmo.run_program(cozmo_program, use_viewer=False, force_viewer_on_top=False)
+    cozmo.run_program(cozmo_program, use_viewer=False, force_viewer_on_top=False)
