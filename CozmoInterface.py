@@ -33,7 +33,7 @@ def cozmo_program(robot: cozmo.robot.Robot):
 
         elif y:
             # Double the speed if the stick is pressed in
-            if joy.leftThumbstick():
+            if joy.leftBumper():
                 cozmo_movement(robot, scalar=y, speed=300)
             else:
                 cozmo_movement(robot, scalar=y)
@@ -41,7 +41,7 @@ def cozmo_program(robot: cozmo.robot.Robot):
         elif x:
             # Double the rotational speed if the stick is pressed in
             # TODO: we have to figure out how to speed the treads to turn
-            if joy.rightThumbstick():
+            if joy.rightBumper():
                 cozmo_rotate(robot, scalar=x, speed=400)
             else:
                 cozmo_rotate(robot, scalar=x)
@@ -65,26 +65,23 @@ def cozmo_program(robot: cozmo.robot.Robot):
             robot.play_anim(name="anim_petdetection_dog_03").wait_for_completed()
 
         elif joy.dpadUp():
-
+            pass
         elif joy.dpadDown():
-
+            pass
         elif joy.dpadLeft():
-
+            pass
         elif joy.dpadRight():
-
-        elif joy.leftBumper():
-
-        elif joy.rightBumper():
-
+            pass
+            
         elif joy.Back():
-
+            pass
         elif joy.Start():
+            pass
 
 
 def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
     TODO
-
     :param robot:
     :param scalar:
     :param speed:
@@ -95,10 +92,9 @@ def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed)).wait_for_completed()
 
 
-def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=200):
+def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
     """
     TODO
-
     :param robot:
     :param scalar:
     :param speed:
