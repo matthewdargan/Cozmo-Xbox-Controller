@@ -5,6 +5,7 @@ Authors: Matthew Dargan, Daniel Stutz
 import cozmo
 from cozmo.util import degrees
 import xbox
+from colors import Colors
 
 
 async def cozmo_program(robot: cozmo.robot.Robot):
@@ -73,22 +74,22 @@ async def cozmo_program(robot: cozmo.robot.Robot):
             robot.play_anim(name="anim_petdetection_dog_04").wait_for_completed()
 
         elif joy.dpadUp():
-            pass
+            robot.set_backpack_lights_off()
 
         elif joy.dpadDown():
-            pass
+            robot.set_all_backpack_lights(Colors.BLUE)
 
         elif joy.dpadLeft():
-            pass
+            robot.set_all_backpack_lights(Colors.RED)
 
         elif joy.dpadRight():
-            pass
+            robot.set_all_backpack_lights(Colors.GREEN)
 
         elif joy.Back():
-            pass
+            robot.say_text("Beep beep beep!")
 
         elif joy.Start():
-            pass
+            robot.say_text("You're a legend!")
 
 
 async def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
