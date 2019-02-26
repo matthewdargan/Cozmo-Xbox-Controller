@@ -74,22 +74,22 @@ async def cozmo_program(robot: cozmo.robot.Robot):
             robot.play_anim(name="anim_petdetection_dog_04").wait_for_completed()
 
         elif joy.dpadUp():
-            robot.set_backpack_lights_off()
+            await robot.set_backpack_lights_off()
 
         elif joy.dpadDown():
-            robot.set_all_backpack_lights(Colors.BLUE)
+            await robot.set_all_backpack_lights(Colors.BLUE)
 
         elif joy.dpadLeft():
-            robot.set_all_backpack_lights(Colors.RED)
+            await robot.set_all_backpack_lights(Colors.RED)
 
         elif joy.dpadRight():
-            robot.set_all_backpack_lights(Colors.GREEN)
+            await robot.set_all_backpack_lights(Colors.GREEN)
 
         elif joy.Back():
-            robot.say_text("Beep beep beep!")
+            await robot.say_text("Beep beep beep!")
 
         elif joy.Start():
-            robot.say_text("You're a legend!")
+            await robot.say_text("You're a legend!")
 
 
 async def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
