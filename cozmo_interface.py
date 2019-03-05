@@ -9,7 +9,7 @@ import xbox
 from colors import Colors
 
 
-async def cozmo_program(robot: cozmo.robot.Robot):
+def cozmo_program(robot: cozmo.robot.Robot):
     """
     Main function controlling the state of cozmo based on the Xbox controller inputs.
 
@@ -38,25 +38,25 @@ async def cozmo_program(robot: cozmo.robot.Robot):
         elif y:
             # double the speed if the left bumper is pressed
             if joy.leftBumper():
-                await cozmo_movement(robot, scalar=y, speed=300)
+                cozmo_movement(robot, scalar=y, speed=300)
             else:
-                await cozmo_movement(robot, scalar=y)
+                cozmo_movement(robot, scalar=y)
 
         elif x:
             # double the rotational speed if the right bumper is pressed
             # TODO: we have to figure out how to speed the treads to turn
             if joy.rightBumper():
-                await cozmo_rotate(robot, scalar=x, speed=350)
+                cozmo_rotate(robot, scalar=x, speed=350)
             else:
-                await cozmo_rotate(robot, scalar=x)
+                cozmo_rotate(robot, scalar=x)
 
         elif left_trigger:
             # move the lift height up by some scalar asynchronously
-            await robot.set_lift_height(left_trigger)
+            robot.set_lift_height(left_trigger)
 
         elif right_trigger:
             # move the lift height down by some scalar asynchronously
-            await robot.set_lift_height(right_trigger)
+            robot.set_lift_height(right_trigger)
 
         elif joy.A():
             # woof
@@ -75,25 +75,25 @@ async def cozmo_program(robot: cozmo.robot.Robot):
             robot.play_anim(name="anim_petdetection_dog_04").wait_for_completed()
 
         elif joy.dpadUp():
-            await robot.set_backpack_lights_off()
+            robot.set_backpack_lights_off()
 
         elif joy.dpadDown():
-            await robot.set_all_backpack_lights(Colors.BLUE)
+            robot.set_all_backpack_lights(Colors.BLUE)
 
         elif joy.dpadLeft():
-            await robot.set_all_backpack_lights(Colors.RED)
+            robot.set_all_backpack_lights(Colors.RED)
 
         elif joy.dpadRight():
-            await robot.set_all_backpack_lights(Colors.GREEN)
+            robot.set_all_backpack_lights(Colors.GREEN)
 
         elif joy.Back():
-            await robot.say_text("Beep beep beep!")
+            robot.say_text("Beep beep beep!")
 
         elif joy.Start():
-            await robot.say_text("You're a legend!")
+            robot.say_text("You're a legend!")
 
 
-async def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
+def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
     Asynchronous wrapper function that moves cozmo linearly.
 
@@ -103,10 +103,10 @@ async def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    await robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed))
+    robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed))
 
 
-async def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
+def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
     """
     Asynchronous wrapper function that rotates cozmo.
 
@@ -116,7 +116,7 @@ async def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    await robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed))
+    robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed))
 
 
 if __name__ == '__main__':
