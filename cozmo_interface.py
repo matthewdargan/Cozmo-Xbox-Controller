@@ -3,7 +3,7 @@ Authors: Matthew Dargan, Daniel Stutz
 """
 
 import cozmo
-from cozmo.util import degrees
+from cozmo.util import radians
 
 import xbox
 from colors import Colors
@@ -24,30 +24,32 @@ def cozmo_program(robot: cozmo.robot.Robot):
         y = joy.leftY()  # get y-axis input from left stick before if statements
         x = joy.rightX()  # get x-axis input from left stick before if statements
         left_trigger = joy.leftTrigger()  # get scalar for the left trigger
-        right_trigger = -joy.rightTrigger()  # get scalar for the right trigger and negate it
+        right_trigger = joy.rightTrigger()  # get scalar for the right trigger and negate it
+
+        movement_speed = 150
+        rotate_speed = 175
 
         if y:
-            # double the speed if the left bumper is pressed
-            if joy.leftBumper():
-                cozmo_movement(robot, scalar=y, speed=300)
-            else:
-                cozmo_movement(robot, scalar=y)
+            cozmo_movement(robot, scalar=y, speed=movement_speed)
 
         elif x:
-            # double the rotational speed if the right bumper is pressed
-            # TODO: we have to figure out how to speed the treads to turn
-            if joy.rightBumper():
-                cozmo_rotate(robot, scalar=x, speed=350)
-            else:
-                cozmo_rotate(robot, scalar=x)
+            cozmo_rotate(robot, scalar=x, speed=rotate_speed)
 
         elif left_trigger:
-            # move the lift height up by some scalar asynchronously
-            robot.set_lift_height(left_trigger)
+            # move the lift height up by some scalar
+            robot.set_lift_height(left_trigger).wait_for_completed()
 
         elif right_trigger:
-            # move the lift height down by some scalar asynchronously
-            robot.set_lift_height(right_trigger)
+            # move the lift height down by some scalar
+            robot.set_lift_height(1 - right_trigger).wait_for_completed()
+
+        elif joy.leftBumper():
+            # double the speed if the left bumper is pressed
+            movement_speed = movement_speed * 2
+
+        elif joy.rightBumper():
+            # double the rotational speed if the right bumper is pressed
+            rotate_speed = rotate_speed * 2
 
         elif joy.A():
             # woof
@@ -109,7 +111,7 @@ def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed)).wait_for_completed()
+    robot.turn_in_place(angle=radians(-scalar), num_retries=2, speed=radians(speed)).wait_for_completed()
 
 
 if __name__ == '__main__':
