@@ -20,22 +20,13 @@ def cozmo_program(robot: cozmo.robot.Robot):
 
     # continous loop that checks for Xbox controller input until we are done with the program
     # Note: Xbox home button will be used to terminate
-    while joy.connected():
-        # refresh the Xbox inputs from the driver
-        joy.refresh()
-
+    while not joy.Guide():
         y = joy.leftY()  # get y-axis input from left stick before if statements
         x = joy.rightX()  # get x-axis input from left stick before if statements
         left_trigger = joy.leftTrigger()  # get scalar for the left trigger
         right_trigger = -joy.rightTrigger()  # get scalar for the right trigger and negate it
 
-        if joy.Guide():
-            # close the Xbox python interface program
-            joy.close()
-            robot.say_text("I am done with this program.").wait_for_completed()
-            exit()
-
-        elif y:
+        if y:
             # double the speed if the left bumper is pressed
             if joy.leftBumper():
                 cozmo_movement(robot, scalar=y, speed=300)
@@ -92,6 +83,8 @@ def cozmo_program(robot: cozmo.robot.Robot):
         elif joy.Start():
             robot.say_text("You're a legend!")
 
+    joy.close()
+
 
 def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
@@ -103,7 +96,7 @@ def cozmo_movement(robot: cozmo.robot.Robot, scalar, speed=150):
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed))
+    robot.drive_straight(cozmo.util.distance_mm(scalar), cozmo.util.speed_mmps(speed)).wait_for_completed()
 
 
 def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
@@ -116,7 +109,7 @@ def cozmo_rotate(robot: cozmo.robot.Robot, scalar, speed=175):
     """
 
     # TODO: Change speed parameter to do some cool scalar math
-    robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed))
+    robot.turn_in_place(angle=scalar, num_retries=2, speed=degrees(speed)).wait_for_completed()
 
 
 if __name__ == '__main__':
